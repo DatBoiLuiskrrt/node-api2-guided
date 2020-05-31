@@ -1,10 +1,11 @@
 const express = require('express');
 // UPPER CASE R FOR ROUTER!!!!!!!
 const router = express.Router(); // INVOKE ROUTER
-const Hubs = require('./hubs/hubs-model.js');
+const Hubs = require("../hubs/hubs-model");
 
-
-server.get('/api/hubs', (req, res) => {
+// THE ROUTER ONLY CARES ABOUT WHAT COMES AFTER /API/HUBS
+// ROUTER ONLY HANDLES ANYTHING AFTER /API/HUBS NOTHING ELSE
+router.get('/', (req, res) => {
     Hubs.find(req.query)
     .then(hubs => {
       res.status(200).json(hubs);
@@ -18,7 +19,7 @@ server.get('/api/hubs', (req, res) => {
     });
   });
   
-  server.get('/api/hubs/:id', (req, res) => {
+  router.get('/:id', (req, res) => {
     Hubs.findById(req.params.id)
     .then(hub => {
       if (hub) {
@@ -36,7 +37,7 @@ server.get('/api/hubs', (req, res) => {
     });
   });
   
-  server.post('/api/hubs', (req, res) => {
+  router.post('/', (req, res) => {
     Hubs.add(req.body)
     .then(hub => {
       res.status(201).json(hub);
@@ -50,7 +51,7 @@ server.get('/api/hubs', (req, res) => {
     });
   });
   
-  server.delete('/api/hubs/:id', (req, res) => {
+  router.delete('/:id', (req, res) => {
     Hubs.remove(req.params.id)
     .then(count => {
       if (count > 0) {
@@ -68,7 +69,7 @@ server.get('/api/hubs', (req, res) => {
     });
   });
   
-  server.put('/api/hubs/:id', (req, res) => {
+  router.put('/:id', (req, res) => {
     const changes = req.body;
     Hubs.update(req.params.id, changes)
     .then(hub => {
@@ -86,6 +87,8 @@ server.get('/api/hubs', (req, res) => {
       });
     });
   });
+  
+  module.exports = router;
   
   // add an endpoint that returns all the messages for a hub
   // add an endpoint for adding new message to a hub
